@@ -22,20 +22,38 @@ class ModelPrediction(IrekuaModelBaseUser):
     model_version = models.ForeignKey(
         'ModelVersion',
         on_delete=models.PROTECT,
-        db_column='model_version_id')
+        db_column='model_version_id',
+        verbose_name=_('model version'),
+        help_text=_('Model and version used for this prediction'),
+        blank=False,
+        null=False)
     event_type = models.ForeignKey(
         EventType,
-        on_delete=models.PROTECT)
+        on_delete=models.PROTECT,
+        db_column='event_type_id',
+        verbose_name=_('event type'),
+        help_text=_('Event predicted by the model.'),
+        blank=False,
+        null=False)
 
-    certainty = models.FloatField()
+    certainty = models.FloatField(
+        db_column='certainty',
+        verbose_name=_('certainty'),
+        help_text=_('Model certainty of prediction. A number from 0 to 1.'),
+        blank=False,
+        null=False)
     annotation = JSONField(
         db_column='annotation',
         verbose_name=_('annotation'),
         default=empty_JSON,
         help_text=_('Information of annotation location within item'),
-        blank=True,
+        blank=False,
         null=False)
-    labels = models.ManyToManyField(Term)
+    labels = models.ManyToManyField(
+        Term,
+        verbose_name=_('labels'),
+        help_text=_('Terms used as labels to describe the predicted event.'),
+        blank=False)
 
     class Meta:
         verbose_name = _('Model Prediction')

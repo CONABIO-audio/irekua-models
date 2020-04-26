@@ -1,7 +1,6 @@
 import os
 from irekua_dev_settings.settings import *
 from irekua_database.settings import *
-from irekua_autocomplete.settings import *
 from irekua_models.settings import *
 
 
@@ -15,7 +14,6 @@ LOCALE_PATHS = [
 
 INSTALLED_APPS = (
     IREKUA_MODELS_APPS +
-    IREKUA_AUTOCOMPLETE_APPS +
     IREKUA_DATABASE_APPS +
     IREKUA_BASE_APPS
 )
