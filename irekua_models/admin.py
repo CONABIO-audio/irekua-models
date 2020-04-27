@@ -1,15 +1,10 @@
 from django.contrib import admin
-from django import forms
-
-from irekua_database.models import Term
-from irekua_database.models import Item
-from irekua_database.models import AnnotationType
-from irekua_database.models import EventType
-from irekua_database.models import ItemType
 from irekua_models import models
 
 
 class CustomModelAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created_on'
+
     def save_model(self, request, instance, form, change):
         user = request.user
         instance = form.save(commit=False)
@@ -21,34 +16,14 @@ class CustomModelAdmin(admin.ModelAdmin):
         return instance
 
 
-@admin.register(Term)
-class TermAdmin(admin.ModelAdmin):
-    search_fields = ['value']
-
-
-@admin.register(AnnotationType)
-class AnnotationTypeAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
-@admin.register(EventType)
-class EventTypeAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
-@admin.register(ItemType)
-class ItemTypeAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
-@admin.register(Item)
-class ItemAdmin(admin.ModelAdmin):
-    search_fields = ['id', 'item_type__name']
-
-
 @admin.register(models.Model)
 class ModelAdmin(CustomModelAdmin):
     search_fields = ['name']
+    list_display = (
+        'id',
+        'name',
+        'annotation_type',
+    )
     fields = (
         ('name', 'repository'),
         'description',
@@ -63,8 +38,15 @@ class ModelAdmin(CustomModelAdmin):
 
 
 @admin.register(models.ModelVersion)
-class IrekuaModelsAdmin(CustomModelAdmin):
+class ModelVersionAdmin(CustomModelAdmin):
     search_fields = ['model__name']
+    list_display_links = ('version', )
+    list_filter = ('created_on', 'created_by')
+    list_display = (
+        'model',
+        'version',
+        'created_on'
+    )
     fields = (
         ('model', 'version'),)
     autocomplete_fields = ['model']
@@ -72,6 +54,15 @@ class IrekuaModelsAdmin(CustomModelAdmin):
 
 @admin.register(models.ModelPrediction)
 class ModelPredictionAdmin(CustomModelAdmin):
+    list_display = (
+        'id',
+        'item',
+        'model_version',
+        'event_type',
+        'certainty',
+        'created_on',
+        'created_by',
+    )
     fields = (
         ('item', 'model_version', 'event_type'),
         'annotation',
