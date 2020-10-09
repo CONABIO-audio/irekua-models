@@ -22,7 +22,12 @@ setup(
     description='Irekua AI model registry',
     long_description=README,
     url='https://github.com/CONABIO-audio/irekua-models',
-    install_requires=['irekua-database'],
+    install_requires=[
+        'irekua-database',
+        'irekua-permissions',
+        'irekua-rest-api',
+        'djangorestframework',
+    ],
     author=(
         'CONABIO, '
         'Gustavo Everardo Robredo Esquivelzeta, '
