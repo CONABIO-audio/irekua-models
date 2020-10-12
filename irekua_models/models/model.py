@@ -2,9 +2,9 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from irekua_database.models.base import IrekuaModelBaseUser
+from irekua_core.models import IrekuaModelBaseUser
+from irekua_terms.models import Term
 from irekua_database.models import ItemType
-from irekua_database.models import Term
 from irekua_database.models import AnnotationType
 from irekua_database.models import EventType
 
